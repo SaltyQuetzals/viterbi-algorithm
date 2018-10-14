@@ -5,10 +5,11 @@ from pprint import pprint
 PARTS_OF_SPEECH = ['noun', 'verb', 'inf', 'prep']
 
 class Sentence:
-    def __init__(self, words, vit):
+    def __init__(self, words, transition_probs, emission_probs):
         self.sentence = ' '.join(words)
         self.words = words
-        self.vit = vit
+        self.transition_probs = transition_probs
+        self.emission_probs = emission_probs
         self.PI = self.__init_table()
         self.BP = self.__init_table()
         self.S = {
@@ -24,8 +25,8 @@ class Sentence:
 
     def __probability(self, k, v, w):
         lookup_prob = self.PI[k - 1][w]
-        transition_prob = math.log(self.vit.transition_probs[(v, w)])
-        emission_prob = math.log(self.vit.emission_probs[self.words[k]][v])
+        transition_prob = math.log(self.transition_probs[(v, w)])
+        emission_prob = math.log(self.emission_probs[self.words[k]][v])
         return lookup_prob + transition_prob + emission_prob
 
     def tag(self):
