@@ -4,6 +4,7 @@ from pprint import pprint
 
 PARTS_OF_SPEECH = ['noun', 'verb', 'inf', 'prep']
 
+
 class Sentence:
     def __init__(self, words, transition_probs, emission_probs):
         self.sentence = ' '.join(words)
@@ -19,7 +20,8 @@ class Sentence:
             self.S[i] = PARTS_OF_SPEECH
 
     def __init_table(self):
-        table = collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
+        table = collections.defaultdict(
+            lambda: collections.defaultdict(lambda: 0))
         table[-1]['phi'] = 1
         return table
 
@@ -48,7 +50,7 @@ class Sentence:
                 viterbi_output += f"P({self.words[k]} = {v}) = {'{0:0.10f}'.format(math.e**max_probability)}\n"
                 if k > 0:
                     bp_output += f"Backptr({self.words[k]} = {v}) = {max_arg}\n"
-                
+
         print(viterbi_output)
         print(bp_output)
 
@@ -56,8 +58,9 @@ class Sentence:
 
     def traceback(self):
         i = len(self.words) - 1
-        max_tag, max_prob = max(self.PI[i].items(), key= lambda x: x[1])
-        print(f'BEST TAG SEQUENCE HAS PROBABILITY {"{0:0.10f}".format(math.e ** max_prob)}')
+        max_tag, max_prob = max(self.PI[i].items(), key=lambda x: x[1])
+        print(
+            f'BEST TAG SEQUENCE HAS PROBABILITY {"{0:0.10f}".format(math.e ** max_prob)}')
         tags = [max_tag]
         while i >= 0:
             tags.append(self.BP[i][tags[-1]])
